@@ -40,13 +40,9 @@ totalNum = [0 for i in range(3000)]
 deathAge = [0 for i in range(3000)]
 spAry = [0 for i in range(3000)]
 ccAry = [0 for i in range(3000)]
-<<<<<<< HEAD
-dAry = [0 for i in range(3000)]
-alphaAry = [0 for i in range(3000)]
-=======
 degreeAry = [0 for i in range(3000)]
 diameterAry = [0 for i in range(3000)]
->>>>>>> 288a5a1f49e4946c128358dd4a4f524b4bde8638
+alphaAry = [0 for i in range(3000)]
 
 while len(G.nodes()) < 10000:
     totalNum[cycle] = len(G.nodes())
