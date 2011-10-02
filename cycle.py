@@ -39,15 +39,16 @@ maxAge = 0
 deathNum = [0 for i in range(3000)]
 birthNum = [0 for i in range(3000)]
 totalNum = [0 for i in range(3000)]
+edgeNum = [0 for i in range(3000)]
 deathAge = [0 for i in range(3000)]
 spAry = [0 for i in range(3000)]
 ccAry = [0 for i in range(3000)]
 degreeAry = [0 for i in range(3000)]
 diameterAry = [0 for i in range(3000)]
 alphaAry = [0 for i in range(3000)]
+gccAry = [0 for i in range(3000)]
 
-while len(G.nodes()) < 1000:
-    totalNum[cycle] = len(G.nodes())
+while len(G.nodes()) < 2000:
 
     # new nodes
     birthNum[cycle] = len(G.nodes()) / 60
@@ -77,27 +78,32 @@ while len(G.nodes()) < 1000:
     else:
         degreeAry[cycle] = nx.degree_histogram(G)
         alpha = computerAlpha(degreeAry[cycle])
-        sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
+        giant_connected_component = nx.connected_component_subgraphs(G)[0]
+        sp = nx.average_shortest_path_length(giant_connected_component)
         cc = nx.average_clustering(G)
-        diameter = nx.algorithms.distance_measures.diameter(nx.connected_component_subgraphs(G)[0])
-        print "Cycle %d, node %d, sp %f, cc %f, diameter %d, alpha %f" % (cycle, len(G.nodes()), sp, cc, diameter, alpha)
+        diameter = nx.algorithms.distance_measures.diameter(giant_connected_component)
+        gcc = float(len(giant_connected_component))/len(G.nodes())
+        nodes = len(G.nodes())
+        edges= len(G.edges())
+        print "Cycle %d,\tnode %d,\tedge %d,\tsp %f,\tcc %f,\tdiameter %d,\talpha %f, gcc %f" % (cycle, nodes, edges, sp, cc, diameter, alpha, gcc)
         spAry[cycle] = sp
         ccAry[cycle] = cc
         diameterAry[cycle] = diameter
         alphaAry[cycle] = alpha
+        gccAry[cycle] = gcc
+        totalNum[cycle] = nodes
+        edgeNum[cycle] = edges
 
     cycle += 1
-    
 
-#print "Cycle\tbirth\tdeath\ttotal\tdeath rate"
-#for i in range(cycle):
-#    print "%d\t%d\t%d\t%d\t%f" % (i, birthNum[i], deathNum[i], totalNum[i], float(deathNum[i])/totalNum[i])
-
+# log
 fsp = open('output/SP', 'w')
 fcc = open('output/CC', 'w')
 fdegree  = open('output/degree', 'w')
 fd = open('output/diameter', 'w')
 falpha = open('output/alpha', 'w')
+fgcc = open('output/GCC', 'w')
+fbd = open('output/birth_death', 'w')
 for i in range(cycle):
     fsp.write('%d\t%f\n' % (i, spAry[i]))
     fcc.write('%d\t%f\n'% (i, ccAry[i]))
@@ -105,12 +111,16 @@ for i in range(cycle):
     for k in range(len(degreeAry[i])):
         fdegree.write('%d\t%d\n' % (k, degreeAry[i][k]))
     fd.write('%d\t%d\n' % (i, diameterAry[i]))
-    falpha.write('%d\t%d\n' % (i, alphaAry[i]))
+    falpha.write('%d\t%f\n' % (i, alphaAry[i]))
+    fgcc.write('%d\t%f\n' % (i, gccAry[i]))
+    fbd.write('%d\t%d\t%d\t%f\n' % (i, birthNum[i], deathNum[i], float(deathNum[i])/float(birthNum[i])))
 fd.close()
 fsp.close()
 fcc.close()
 fdegree.close()
 falpha.close()
+fgcc.close()
+fbd.close()
 
 #print "Life Distribution"
 f = open('output/life_time', 'w')
