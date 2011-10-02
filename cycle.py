@@ -25,7 +25,8 @@ totalNum = [0 for i in range(3000)]
 deathAge = [0 for i in range(3000)]
 spAry = [0 for i in range(3000)]
 ccAry = [0 for i in range(3000)]
-dAry = [0 for i in range(3000)]
+degreeAry = [0 for i in range(3000)]
+diameterAry = [0 for i in range(3000)]
 
 while len(G.nodes()) < 10000:
     totalNum[cycle] = len(G.nodes())
@@ -52,13 +53,16 @@ while len(G.nodes()) < 10000:
             deathAge[G.node[node]['age']] += 1
             G.remove_node(node)
 
-    dAry[cycle] = nx.degree_histogram(G)
+    degreeAry[cycle] = nx.degree_histogram(G)
     
     sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
     cc = nx.average_clustering(G)
-    print "Cycle %d, node %d, sp %f, cc %f" % (cycle, len(G.nodes()), sp, cc)
+    diameter = nx.algorithms.distance_measures.diameter(G)
+
+    print "Cycle %d, node %d, sp %f, cc %f, diameter %d" % (cycle, len(G.nodes()), sp, cc, diameter)
     spAry[cycle] = sp
     ccAry[cycle] = cc
+    diameterAry[cycle] = diameter
 
     cycle += 1
     
@@ -69,16 +73,19 @@ while len(G.nodes()) < 10000:
 
 fsp = open('output/SP', 'w')
 fcc = open('output/CC', 'w')
-fd  = open('output/degree', 'w')
+fdegree  = open('output/degree', 'w')
+fd = open('output/Diameter', 'w')
 for i in range(cycle):
     fsp.write('%d\t%f\n' % (i, spAry[i]))
     fcc.write('%d\t%f\n'% (i, ccAry[i]))
-    fd.write('Cycle%d\n' % (i, ))
-    for k in range(len(dAry[i])):
-        fd.write('%d\t%d\n' % (k, dAry[i][k]))
+    fdegree.write('Cycle%d\n' % (i, ))
+    for k in range(len(degreeAry[i])):
+        fdegree.write('%d\t%d\n' % (k, degreeAry[i][k]))
+    fd.write('%d\t%d\n', i, diameterAry[i])
+fd.close()
 fsp.close()
 fcc.close()
-fd.close()
+fdegree.close()
 
 #print "Life Distribution"
 f = open('output/life_time', 'w')
