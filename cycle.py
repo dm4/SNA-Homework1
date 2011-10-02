@@ -48,7 +48,7 @@ diameterAry = [0 for i in range(3000)]
 alphaAry = [0 for i in range(3000)]
 gccAry = [0 for i in range(3000)]
 
-while len(G.nodes()) < 2000:
+while len(G.nodes()) < 10000:
 
     # new nodes
     birthNum[cycle] = len(G.nodes()) / 60
