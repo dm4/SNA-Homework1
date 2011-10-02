@@ -27,6 +27,8 @@ def computerAlpha(degree):
 #    print "alpha: %f" % alpha
     return alpha
 
+quick_mode = False
+
 G = nx.complete_graph(5)
 for node in G.nodes():
     G.node[node]['age'] = 0
@@ -48,12 +50,13 @@ while len(G.nodes()) < 10000:
     totalNum[cycle] = len(G.nodes())
 
     # new nodes
-    birthNum[cycle] = len(G.nodes()) / 50
+    birthNum[cycle] = len(G.nodes()) / 60
     if birthNum[cycle] < 100:
         birthNum[cycle] = 100
     for i in range(birthNum[cycle]):
         G.add_node(nodeNum, age=0)
-        BAModel.addnode(G, nodeNum, 4)
+        if (not quick_mode):
+            BAModel.addnode(G, nodeNum, 4)
         nodeNum += 1
 
     # check if node is dead
@@ -69,18 +72,19 @@ while len(G.nodes()) < 10000:
             deathAge[G.node[node]['age']] += 1
             G.remove_node(node)
 
-    degreeAry[cycle] = nx.degree_histogram(G)
-    alpha = computerAlpha(degreeAry[cycle])
-    
-    sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
-    cc = nx.average_clustering(G)
-    diameter = nx.algorithms.distance_measures.diameter(G)
-
-    print "Cycle %d, node %d, sp %f, cc %f, diameter %d, alpha %f" % (cycle, len(G.nodes()), sp, cc, diameter, alpha)
-    spAry[cycle] = sp
-    ccAry[cycle] = cc
-    diameterAry[cycle] = diameter
-    alphaAry[cycle] = alpha
+    if (quick_mode):
+        print "Cycle %d, node %d" % (cycle, len(G.nodes()))
+    else:
+        degreeAry[cycle] = nx.degree_histogram(G)
+        alpha = computerAlpha(degreeAry[cycle])
+        sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
+        cc = nx.average_clustering(G)
+        diameter = nx.algorithms.distance_measures.diameter(G)
+        print "Cycle %d, node %d, sp %f, cc %f, diameter %d, alpha %f" % (cycle, len(G.nodes()), sp, cc, diameter, alpha)
+        spAry[cycle] = sp
+        ccAry[cycle] = cc
+        diameterAry[cycle] = diameter
+        alphaAry[cycle] = alpha
 
     cycle += 1
     
