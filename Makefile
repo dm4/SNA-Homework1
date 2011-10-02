@@ -1,7 +1,9 @@
 run:
-	[ ! -d output ] && mkdir output
+	rm -rf output
+	mkdir output
 	./cycle.py
 
 draw:
-	[ ! -d image ] && mkdir image
+	rm -rf image
+	mkdir image
 	./draw.py
