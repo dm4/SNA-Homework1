@@ -70,16 +70,17 @@ while len(G.nodes()) < 10000:
             G.remove_node(node)
 
     degreeAry[cycle] = nx.degree_histogram(G)
-    alphaAry[cycle] = computerAlpha(degreeAry[cycle])
+    alpha = computerAlpha(degreeAry[cycle])
     
     sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
     cc = nx.average_clustering(G)
     diameter = nx.algorithms.distance_measures.diameter(G)
 
-    print "Cycle %d, node %d, sp %f, cc %f, diameter %d" % (cycle, len(G.nodes()), sp, cc, diameter)
+    print "Cycle %d, node %d, sp %f, cc %f, diameter %d, alpha %f" % (cycle, len(G.nodes()), sp, cc, diameter, alpha)
     spAry[cycle] = sp
     ccAry[cycle] = cc
     diameterAry[cycle] = diameter
+    alphaAry[cycle] = alpha
 
     cycle += 1
     
