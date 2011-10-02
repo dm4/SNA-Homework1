@@ -27,7 +27,7 @@ spAry = [0 for i in range(3000)]
 ccAry = [0 for i in range(3000)]
 dAry = [0 for i in range(3000)]
 
-while len(G.nodes()) < 1000:
+while len(G.nodes()) < 10000:
     totalNum[cycle] = len(G.nodes())
 
     # new nodes
