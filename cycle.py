@@ -12,6 +12,21 @@ def deathRate(age):
         rate = rate / (1 + ((60 -age) / 60.0) * 10)
     return rate
 
+def computerAlpha(degree):
+    xmin = 4
+    n = len(degree) + 1
+    degree_f = []
+    totalDegree = reduce(lambda x, y: x + y, degree)
+    for d in degree:
+        degree_f.append(float(d)/float(totalDegree))
+    s = 0
+    for i in range(1, n):
+        s += math.log(float(i)/float(xmin))
+    s = math.pow(s, -1)
+    alpha = 1 + s * n
+#    print "alpha: %f" % alpha
+    return alpha
+
 G = nx.complete_graph(5)
 for node in G.nodes():
     G.node[node]['age'] = 0
@@ -26,6 +41,7 @@ deathAge = [0 for i in range(3000)]
 spAry = [0 for i in range(3000)]
 ccAry = [0 for i in range(3000)]
 dAry = [0 for i in range(3000)]
+alphaAry = [0 for i in range(3000)]
 
 while len(G.nodes()) < 1000:
     totalNum[cycle] = len(G.nodes())
@@ -53,6 +69,7 @@ while len(G.nodes()) < 1000:
             G.remove_node(node)
 
     dAry[cycle] = nx.degree_histogram(G)
+    alphaAry[cycle] = computerAlpha(dAry[cycle])
     
     sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
     cc = nx.average_clustering(G)
