@@ -46,7 +46,7 @@ degreeAry = [0 for i in range(3000)]
 diameterAry = [0 for i in range(3000)]
 alphaAry = [0 for i in range(3000)]
 
-while len(G.nodes()) < 10000:
+while len(G.nodes()) < 1000:
     totalNum[cycle] = len(G.nodes())
 
     # new nodes
@@ -79,7 +79,7 @@ while len(G.nodes()) < 10000:
         alpha = computerAlpha(degreeAry[cycle])
         sp = nx.average_shortest_path_length(nx.connected_component_subgraphs(G)[0])
         cc = nx.average_clustering(G)
-        diameter = nx.algorithms.distance_measures.diameter(G)
+        diameter = nx.algorithms.distance_measures.diameter(nx.connected_component_subgraphs(G)[0])
         print "Cycle %d, node %d, sp %f, cc %f, diameter %d, alpha %f" % (cycle, len(G.nodes()), sp, cc, diameter, alpha)
         spAry[cycle] = sp
         ccAry[cycle] = cc
@@ -97,17 +97,20 @@ fsp = open('output/SP', 'w')
 fcc = open('output/CC', 'w')
 fdegree  = open('output/degree', 'w')
 fd = open('output/diameter', 'w')
+falpha = open('output/alpha', 'w')
 for i in range(cycle):
     fsp.write('%d\t%f\n' % (i, spAry[i]))
     fcc.write('%d\t%f\n'% (i, ccAry[i]))
-    fdegree.write('Cycle%d\n' % (i, ))
+    fdegree.write('Cycle%d\n' % i)
     for k in range(len(degreeAry[i])):
         fdegree.write('%d\t%d\n' % (k, degreeAry[i][k]))
-    fd.write('%d\t%d\n', i, diameterAry[i])
+    fd.write('%d\t%d\n' % (i, diameterAry[i]))
+    falpha.write('%d\t%d\n' % (i, alphaAry[i]))
 fd.close()
 fsp.close()
 fcc.close()
 fdegree.close()
+falpha.close()
 
 #print "Life Distribution"
 f = open('output/life_time', 'w')
