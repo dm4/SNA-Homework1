@@ -95,6 +95,15 @@ for i in range(4):
         degree_x[i].append(j)
         degree_data[i].append(float(d)/float(degree_sum[c]))
 
+# read node edge data
+f = open('output/node_edge', 'r')
+node_data = []
+edge_data = []
+for line in f:
+    element = line.split()
+    node_data.append(int(element[1]))
+    edge_data.append(int(element[2]))
+
 # draw life.png
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -135,12 +144,22 @@ plt.grid(True)
 plt.savefig("image/SP.png", dpi=200)
 
 # draw degree.png
-plt.subplots_adjust(wspace=20.0)
 fig = plt.figure()
 for i in range(4):
     ex = fig.add_subplot(221 + i)
     ex.loglog(degree_x[i], degree_data[i], 'r-')
     plt.subplots_adjust(hspace=0.5, wspace=0.4)
     plt.title('Cycle ' + str(degree_cycle[i]))
+    plt.xlabel('degree k')
+    plt.ylabel('P(k)')
     plt.grid(True)
 plt.savefig("image/degree.png", dpi=200)
+
+# draw node_edge.png
+fig = plt.figure()
+x = fig.add_subplot(111)
+x.loglog(node_data, edge_data, 'r-')
+plt.grid(True)
+plt.xlabel('Number of nodes')
+plt.ylabel('Number of edges')
+plt.savefig('image/node_edge.png', dpi=200)
