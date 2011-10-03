@@ -104,6 +104,7 @@ fd = open('output/diameter', 'w')
 falpha = open('output/alpha', 'w')
 fgcc = open('output/GCC', 'w')
 fbd = open('output/birth_death', 'w')
+fne = open('output/node_edge', 'w')
 for i in range(cycle):
     fsp.write('%d\t%f\n' % (i, spAry[i]))
     fcc.write('%d\t%f\n'% (i, ccAry[i]))
@@ -114,6 +115,7 @@ for i in range(cycle):
     falpha.write('%d\t%f\n' % (i, alphaAry[i]))
     fgcc.write('%d\t%f\n' % (i, gccAry[i]))
     fbd.write('%d\t%d\t%d\t%f\n' % (i, birthNum[i], deathNum[i], float(deathNum[i])/float(birthNum[i])))
+    fne.write('%d\t%d\t%d\n' % (i, totalNum[i], edgeNum[i]))
 fd.close()
 fsp.close()
 fcc.close()
@@ -121,6 +123,7 @@ fdegree.close()
 falpha.close()
 fgcc.close()
 fbd.close()
+fne.close()
 
 #print "Life Distribution"
 f = open('output/life_time', 'w')
