@@ -49,6 +49,27 @@ for line in f:
     real_age_x.append(element[0])
 f.close()
 
+# read average cc data
+f = open('output/CC', 'r')
+cc_x = []
+cc_data = []
+for line in f:
+    element = line.split()
+    cc_x.append(int(element[0]))
+    cc_data.append(float(element[1]))
+f.close()
+
+# read average sp data
+f = open('output/SP', 'r')
+sp_x = []
+sp_data = []
+for line in f:
+    element = line.split()
+    sp_x.append(int(element[0]))
+    sp_data.append(float(element[1]))
+f.close()
+
+
 # draw life.png
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -69,4 +90,22 @@ cx.set_xticklabels(['0~4', '20~24', '40~44', '60~64', '80~84'])
 cx.set_xticks(range(0, 100, 20))
 cx.grid(True)
 plt.savefig("image/age.png", dpi=200)
+
+
+# draw CC.png
+fig = plt.figure()
+dx = fig.add_subplot(111)
+dx.plot(cc_x, cc_data, 'r-', picker=5)
+plt.ylabel('clustering coefficient')
+plt.grid(True)
+plt.savefig("image/CC.png", dpi=200)
+
+# draw SP.png
+fig = plt.figure()
+ex = fig.add_subplot(111)
+ex.plot(sp_x, sp_data, 'r-', picker=5)
+plt.ylabel('shortest path')
+plt.grid(True)
+plt.savefig("image/SP.png", dpi=200)
+
 
