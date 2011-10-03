@@ -107,7 +107,7 @@ fbd = open('output/birth_death', 'w')
 for i in range(cycle):
     fsp.write('%d\t%f\n' % (i, spAry[i]))
     fcc.write('%d\t%f\n'% (i, ccAry[i]))
-    fdegree.write('Cycle%d\n' % i)
+    fdegree.write('Cycle %d\n' % i)
     for k in range(len(degreeAry[i])):
         fdegree.write('%d\t%d\n' % (k, degreeAry[i][k]))
     fd.write('%d\t%d\n' % (i, diameterAry[i]))
