@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import matplotlib.pyplot as plt
+import math
 
 # our life data
 f = open('output/life_time', 'r')
@@ -95,6 +96,35 @@ for i in range(4):
         degree_x[i].append(j)
         degree_data[i].append(float(d)/float(degree_sum[c]))
 
+# read alpha data for calculate KL-divergence
+alpha_data = []
+f = open('output/alpha', 'r')
+for line in f:
+    element = line.split()
+    alpha_data.append(float(element[1]))
+f.close()
+
+# calculate degree distribution KL-divergence
+for i in range(4):
+    cycle = degree_cycle[i]
+    C = 0
+    for k in range(4, len(degree_data_all[cycle])):
+        C += pow(k, -alpha_data[cycle])
+    C = pow(C, -1)
+#    print "cycle %d, alpha %f, C %f" % (cycle, alpha_data[cycle], C)
+    D = 0
+    adjust_pk = 0
+    for k in range(4, len(degree_data_all[cycle])):
+        adjust_pk += degree_data[i][k]
+    for k in range(4, len(degree_data_all[cycle])):
+        pk = degree_data[i][k] / adjust_pk
+        qk = C * pow(k, -alpha_data[cycle])
+#        print "pk %f, qk %f" % (pk, qk)
+        if pk != 0 and qk != 0:
+            D += pk * math.log10(pk/qk)
+            D += qk * math.log10(qk/pk)
+    print "Cycle %4d, alpha %f, symmetric KL-divergence %f" % (cycle, alpha_data[cycle], D)
+
 # read node edge data
 f = open('output/node_edge', 'r')
 node_data = []
@@ -125,7 +155,6 @@ cx.set_xticks(range(0, 100, 20))
 plt.xlabel('Age')
 cx.grid(True)
 plt.savefig("image/age.png", dpi=200)
-
 
 # draw CC.png
 fig = plt.figure()
