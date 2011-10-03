@@ -69,6 +69,31 @@ for line in f:
     sp_data.append(float(element[1]))
 f.close()
 
+# read degree data
+f = open('output/degree', 'r')
+degree_data_all = []
+degree_sum = []
+i = 0
+for line in f:
+    element = line.split()
+    if (element[0] == 'Cycle'):
+        i = int(element[1])
+        degree_data_all.append([])
+        degree_sum.append(0)
+        continue
+    degree_data_all[i].append(int(element[1]))
+    degree_sum[i] += int(element[1])
+f.close()
+t = len(degree_data_all) - 1
+degree_x = [[], [], [], []]
+degree_data = [[], [], [], []]
+degree_cycle = (t/2, 3*t/4, 7*t/8, t)
+for i in range(4):
+    c = degree_cycle[i]
+    for j in range(len(degree_data_all[c])):
+        d = degree_data_all[c][j]
+        degree_x[i].append(j)
+        degree_data[i].append(float(d)/float(degree_sum[c]))
 
 # draw life.png
 fig = plt.figure()
@@ -76,7 +101,7 @@ ax = fig.add_subplot(111)
 ax.plot(life_x, life_data_f, 'r-')
 bx = fig.add_subplot(111)
 bx.plot(life_x, real_data[0:len(life_x)], 'b-')
-plt.xlabel('Age')
+plt.xlabel('Life Time')
 plt.grid(True)
 plt.savefig("image/life.png", dpi=200)
 
@@ -88,6 +113,7 @@ cx = fig.add_subplot(111)
 cx.plot(age_x, real_age_data[0:len(age_x)], 'b-')
 cx.set_xticklabels(['0~4', '20~24', '40~44', '60~64', '80~84'])
 cx.set_xticks(range(0, 100, 20))
+plt.xlabel('Age')
 cx.grid(True)
 plt.savefig("image/age.png", dpi=200)
 
@@ -108,4 +134,13 @@ plt.ylabel('shortest path')
 plt.grid(True)
 plt.savefig("image/SP.png", dpi=200)
 
-
+# draw degree.png
+plt.subplots_adjust(wspace=20.0)
+fig = plt.figure()
+for i in range(4):
+    ex = fig.add_subplot(221 + i)
+    ex.loglog(degree_x[i], degree_data[i], 'r-')
+    plt.subplots_adjust(hspace=0.5, wspace=0.4)
+    plt.title('Cycle ' + str(degree_cycle[i]))
+    plt.grid(True)
+plt.savefig("image/degree.png", dpi=200)
