@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 import math
+import matplotlib.text as tt
 
 # our life data
 f = open('output/life_time', 'r')
@@ -224,14 +225,13 @@ plt.savefig('image/node_edge.png', dpi=200)
 # draw GC.png
 fig = plt.figure()
 GC = fig.add_subplot(111)
-GC.plot(iteration_data, GCrate_data, 'r-', linewidth=1)
+GC.plot(iteration_data, GCrate_data, 'r-', linewidth=2)
 GC.plot(iteration_data2, GCrate_data2, 'ks')
 
 plt.xlabel("iterations (cycles)")
 plt.ylabel("relative size of the GC")
-GC.set_yticklabels(['92%', '94%', '96%', '98%', '100%'])
+GC.set_yticklabels(['92%', '94%', '96%', '98%', '100'])
 GC.set_yticks(range(92, 100, 2))
-GC.set_yticklabelsize = 8
 GC.grid(True)
 plt.savefig("image/GC.png", dpi=200)
 
