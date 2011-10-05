@@ -10,6 +10,7 @@ To draw image
 
 Output file
 -----------
+
 - life_time
     Life time distribution
 
