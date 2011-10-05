@@ -121,8 +121,8 @@ for i in range(4):
         qk = C * pow(k, -alpha_data[cycle])
 #        print "pk %f, qk %f" % (pk, qk)
         if pk != 0 and qk != 0:
-            D += pk * math.log10(pk/qk)
-            D += qk * math.log10(qk/pk)
+            D += pk * math.log(pk/qk, 2)
+            D += qk * math.log(qk/pk, 2)
     print "Cycle %4d, alpha %f, symmetric KL-divergence %f" % (cycle, alpha_data[cycle], D)
 
 # read node edge data
